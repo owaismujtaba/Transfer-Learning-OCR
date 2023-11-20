@@ -27,7 +27,8 @@ class ImagePreprocessor(BaseEstimator, TransformerMixin):
     def transform(self, X, y=None):
         X = np.array(X)
         n_samples, _ = X.shape
-        X = X.reshape(n_samples, 32, 32)
+        X = X.reshape(n_samples, 32, 32, 1)
+        X = np.repeat(X, 3, axis=1)
         return X
     
 
@@ -75,9 +76,10 @@ class DataTransformation:
             val_X = pre_processor.transform(val_X)
             test_X = pre_processor.transform(test_X)
             
+            print(train_X.shape, val_X.shape, test_X.shape)
             save_object(file_path=self.data_transformation_config.preprocessor_obj_file, obj=pre_processor)
             print('Saved preprocessor object')
-            logging.info('Preprocessing og the filesd done and preprocessor saveds')
+            logging.info('Preprocessing of the filesd done and preprocessor saveds')
             print('Data Transformation Completed')
             
             
