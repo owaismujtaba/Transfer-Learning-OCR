@@ -13,12 +13,13 @@ class ModelVGG16:
         for layer in self.vgg16.layers:
             layer.trainable = False
         
+        block5_output = self.vgg16.get_layer('block5_pool').output
         
-        x = Flatten()(self.vgg16.output)
+        x = Flatten()(block5_output)
+        x = Dense(2048, activation='relu')(x)   
         x = Dense(1024, activation='relu')(x)    
         x = Dense(215, activation='relu')(x)
         output_layer = Dense(config.OUTPUT_CLASSES, activation='softmax')(x)
         
-        model = Model(inputs=self.vgg16.input, outputs=output_layer)
+        self.model = Model(inputs=self.vgg16.input, outputs=output_layer)
         
-        return model

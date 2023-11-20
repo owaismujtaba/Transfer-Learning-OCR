@@ -5,6 +5,7 @@ from src.components.models import ModelVGG16
 from src.utils import read_data_for_transformation
 import config
 import tensorflow as tf
+from src.vis_utils import plot_accuracy, plot_loss
 import pdb
 
 if __name__ == '__main__':
@@ -27,11 +28,16 @@ if __name__ == '__main__':
         optimizer = tf.keras.optimizers.Adam(learning_rate=config.LEARNING_RATE)
 
         model = ModelVGG16()
-        model_train = ModelTrainer(model,
+        model_train = ModelTrainer(model.model,
                                        train_X=train_X, train_y=train_y, 
                                        val_X=val_X, val_y=val_y,
                                        test_X=test_X, test_y=test_y,
                                        optimizer=optimizer
                                        )
-        model_train.train()
+        history = model_train.train(name='VGG16Backend')
+        
+        plot_accuracy(history=history, name='vgg16_accuracy')
+        plot_loss(history=history, name='vgg16_loss')
+        
+        
        

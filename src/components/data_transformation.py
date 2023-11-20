@@ -28,7 +28,7 @@ class ImagePreprocessor(BaseEstimator, TransformerMixin):
         X = np.array(X)
         n_samples, _ = X.shape
         X = X.reshape(n_samples, 32, 32, 1)
-        X = np.repeat(X, 3, axis=1)
+        X = np.repeat(X, 3, axis=3)
         return X
     
 
@@ -75,6 +75,8 @@ class DataTransformation:
             train_X = pre_processor.fit_transform(train_X)
             val_X = pre_processor.transform(val_X)
             test_X = pre_processor.transform(test_X)
+            
+            #train_y, val_y, test_y  = encode_labels_logits(train_y, val_y, test_y)
             
             print(train_X.shape, val_X.shape, test_X.shape)
             save_object(file_path=self.data_transformation_config.preprocessor_obj_file, obj=pre_processor)

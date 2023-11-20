@@ -6,7 +6,7 @@ import pandas as pd
 import pickle
 import tensorflow as tf
 import config
-
+from tensorflow.keras.utils import to_categorical
 
 import pdb
 from src.components.data_ingestion import DataIngestionConfig
@@ -49,17 +49,28 @@ def read_data_for_transformation(preprocessor):
             test_X = test_X.drop('Unnamed: 0', axis=1)
             test_y = test_y.drop('Unnamed: 0', axis=1)
 
-            
+            train_y, val_y, test_y = encode_labels_logits(train_y, val_y, test_y)
             preprocessor = load_preprocessor_object(preprocessor)
             train_X  = preprocessor.transform(train_X)
             val_X = preprocessor.transform(val_X)
             test_X = preprocessor.transform(test_X)
             
+            
             return train_X, train_y, val_X, val_y, test_X, test_y
     
     except Exception as e:
         raise CustomException(e, sys)
+
+def encode_labels_logits(train_y, val_y, test_y):
+    train_y -= 1
+    val_y -= 1
+    test_y -= 1 
     
+    train_y  = to_categorical(train_y)
+    val_y = to_categorical(val_y)
+    test_y = to_categorical(test_y)
+    
+    return train_y, val_y, test_y
     
 def convert_tensor_to_dataset_loader(X, y):
     features = X.iloc[:, :-1].values
