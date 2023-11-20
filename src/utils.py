@@ -3,6 +3,7 @@ import sys
 import dill
 import numpy as np
 import pandas as pd
+import tensorflow as tf
 import config
 from sklearn.metrics import r2_score
 from sklearn.model_selection import GridSearchCV
@@ -46,3 +47,15 @@ def read_data_for_transformation():
     
     except Exception as e:
         raise CustomException(e, sys)
+    
+    
+def convert_tensor_to_dataset_loader(X, y):
+    features = X.iloc[:, :-1].values
+    labels = y.iloc[:, -1].values
+            
+    dataset = tf.data.Dataset.from_tensor_slices((features, labels))
+
+    dataset = dataset.shuffle(buffer_size=len(features))
+    dataset = dataset.batch(config.BATCH_SIZE)
+
+    return dataset

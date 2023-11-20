@@ -2,7 +2,7 @@ import pandas as pd
 import tensorflow as tf
 import config
 
-class DatasetLoader(tf.data.Dataset):
+class ArabicDatasetLoader:
     def __init__(self, X, y):
         self.batch_size = config.BATCH_SIZE
         self.features = X
@@ -23,8 +23,4 @@ class DatasetLoader(tf.data.Dataset):
             self.dataset = self.dataset.shuffle(buffer_size=len(self.features))
         self.dataset = self.dataset.batch(self.batch_size)
 
-    def __iter__(self):
-        return iter(self.dataset)
-
-    def __len__(self):
-        return len(self.dataframe)
+        return self.dataset
