@@ -28,6 +28,7 @@ if __name__ == '__main__':
         optimizer = tf.keras.optimizers.Adam(learning_rate=config.LEARNING_RATE)
 
         model = ModelVGG16()
+        model.model.summary()
         model_train = ModelTrainer(model.model,
                                        train_X=train_X, train_y=train_y, 
                                        val_X=val_X, val_y=val_y,
