@@ -5,7 +5,7 @@ import os
 def plot_accuracy(history, name):
     
     dir_path = os.path.join(config.CUR_DIR, 'artifacts', 'images')
-    image_name = dir_path + name + '.png'
+    image_name = dir_path +'/'+ name + '.png'
     
     dir_path = os.path.dirname(dir_path)
     os.makedirs(dir_path, exist_ok=True)
@@ -17,6 +17,7 @@ def plot_accuracy(history, name):
     plt.legend(['Train', 'Validation'], loc='upper left')
     
     plt.savefig(image_name, dpi=600)
+    plt.clf()
     
 def plot_loss(history, name):
     
@@ -33,3 +34,4 @@ def plot_loss(history, name):
     plt.legend(['Train', 'Validation'], loc='upper left')
     
     plt.savefig(image_name, dpi=600)
+    plt.clf()
