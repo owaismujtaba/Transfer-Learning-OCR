@@ -7,6 +7,7 @@ import pickle
 import tensorflow as tf
 import config
 from tensorflow.keras.utils import to_categorical
+from tensorflow.keras.preprocessing.image import ImageDataGenerator
 
 import pdb
 from src.components.data_ingestion import DataIngestionConfig
@@ -83,3 +84,18 @@ def convert_tensor_to_dataset_loader(X, y):
     dataset = dataset.batch(config.BATCH_SIZE)
 
     return dataset
+
+
+def agument_dataset():
+    
+    datagen = ImageDataGenerator(
+        rotation_range=20,
+        width_shift_range=0.2,
+        height_shift_range=0.2,
+        shear_range=0.2,
+        zoom_range=0.2,
+        horizontal_flip=True,
+        fill_mode='nearest'
+    )
+    return datagen
+    

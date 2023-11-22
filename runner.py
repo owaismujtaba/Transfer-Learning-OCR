@@ -29,16 +29,20 @@ if __name__ == '__main__':
 
         model = ModelVGG16()
         model.model.summary()
+        
         model_train = ModelTrainer(model.model,
                                        train_X=train_X, train_y=train_y, 
                                        val_X=val_X, val_y=val_y,
                                        test_X=test_X, test_y=test_y,
                                        optimizer=optimizer
-                                       )
-        history = model_train.train(name='VGG16Backend')
+                                )
+        model_name = 'vgg16v3'
+        acc_plot_name = model_name + '_accuracy.png'
+        loss_plot_name = model_name + '_loss.png'
+        history = model_train.train(name=model_name)
         
-        plot_accuracy(history=history, name='vgg16_accuracy')
-        plot_loss(history=history, name='vgg16_loss')
+        plot_accuracy(history=history, name=acc_plot_name)
+        plot_loss(history=history, name=loss_plot_name)
         
         
        

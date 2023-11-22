@@ -4,10 +4,13 @@ import config
 from src.components.data_ingestion import DataIngestionConfig
 from src.components.data_transformation import DataTransformationConfig
 from src.utils import save_object, convert_tensor_to_dataset_loader
-from tensorflow.keras.callbacks import EarlyStopping
-from tensorflow.keras.models import save_model
+from src.utils import agument_dataset
 from src.logger import logging
 from src.exception import CustomException
+
+from tensorflow.keras.callbacks import EarlyStopping
+from tensorflow.keras.models import save_model
+
 from dataclasses import dataclass
 import tensorflow as tf
 
@@ -44,9 +47,10 @@ class ModelTrainer:
             #train_loader = convert_tensor_to_dataset_loader(self.train_X, self.train_y)
             #val_loader = convert_tensor_to_dataset_loader(self.val_X, self.val_y)
             self.model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
-
+            data_generator = agument_dataset()
+            train_gen = data_generator.flow(self.train_X, self.train_y, batch_size=config.BATCH_SIZE)
             history = self.model.fit(
-                self.train_X, self.train_y, 
+                train_gen, 
                 batch_size=config.BATCH_SIZE, 
                 epochs=config.EPOCHS,
                 validation_data=(self.val_X, self.val_y,),
