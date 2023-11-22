@@ -14,7 +14,7 @@ class ModelVGG16:
             layer.trainable = False
         
         block3_output = self.vgg16.get_layer('block3_pool').output
-        pdb.set_trace()
+        #trace()
         x = Conv2D(512, (3,3), activation='relu')(block3_output)
         x = Flatten()(x)
         x = Dense(2048, activation='relu')(x)   
