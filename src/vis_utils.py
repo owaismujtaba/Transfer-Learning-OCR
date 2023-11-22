@@ -5,10 +5,10 @@ import os
 def plot_accuracy(history, name):
     
     dir_path = os.path.join(config.CUR_DIR, 'artifacts', 'images')
-    image_name = dir_path +'/'+ name + '.png'
-    
     dir_path = os.path.dirname(dir_path)
     os.makedirs(dir_path, exist_ok=True)
+    image_name = os.path.join(dir_path, name)
+
     plt.plot(history.history['accuracy'])
     plt.plot(history.history['val_accuracy'])
     plt.title('Model Accuracy')
@@ -22,10 +22,10 @@ def plot_accuracy(history, name):
 def plot_loss(history, name):
     
     dir_path = os.path.join(config.CUR_DIR, 'artifacts', 'images')
-    image_name = dir_path + name + '.png'
-    
     dir_path = os.path.dirname(dir_path)
     os.makedirs(dir_path, exist_ok=True)
+    image_name = os.path.join(dir_path, name)
+
     plt.plot(history.history['loss'])
     plt.plot(history.history['val_loss'])
     plt.title('Model loss')
