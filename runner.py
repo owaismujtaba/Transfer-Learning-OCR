@@ -7,6 +7,7 @@ import config
 import tensorflow as tf
 from src.vis_utils import plot_accuracy, plot_loss
 import pdb
+import os
 
 if __name__ == '__main__':
    if config.TRAIN:
@@ -36,10 +37,30 @@ if __name__ == '__main__':
                                        test_X=test_X, test_y=test_y,
                                        optimizer=optimizer
                                 )
-        model_name = 'vgg16v3'
-        acc_plot_name = model_name + '_accuracy.png'
-        loss_plot_name = model_name + '_loss.png'
-        history = model_train.train(name=model_name)
+        
+        dir_path = os.path.join(config.CUR_DIR, 'artifacts', 'Models')
+        #dir_path = os.path.dirname(dir_path)
+        os.makedirs(dir_path, exist_ok=True)
+        
+        model_name = 'vgg16v'
+        version = 0
+        
+        while True:
+            name = model_name + str(version) + '.h5'
+            model_path = os.path.join(dir_path,name)
+            if os.path.exists(model_path):
+                version += 1
+            else:
+                break
+        print(model_path)    
+        fig_name = model_name.split('\\')[-1].split('.')[0] + str(version)
+        #pdb.set_trace()
+        print('fig;',fig_name)
+        
+        acc_plot_name = fig_name + '_accuracy.png'
+        loss_plot_name = fig_name + '_loss.png'
+
+        history = model_train.train(name=model_path)
         
         plot_accuracy(history=history, name=acc_plot_name)
         plot_loss(history=history, name=loss_plot_name)

@@ -39,28 +39,27 @@ class ModelTrainer:
         self.optimizer = optimizer
     
         
-    def train(self, name):
+    def train(self, name='demo.h5'):
         try:
             logging.info('Starting Model vgg16 Training')
             early_stopping = EarlyStopping(monitor='val_loss', patience=4, restore_best_weights=True)
            
             #train_loader = convert_tensor_to_dataset_loader(self.train_X, self.train_y)
             #val_loader = convert_tensor_to_dataset_loader(self.val_X, self.val_y)
-            self.model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
+            self.model.compile(loss='categorical_crossentropy', optimizer=self.optimizer, metrics=['accuracy'])
             data_generator = agument_dataset()
             train_gen = data_generator.flow(self.train_X, self.train_y, batch_size=config.BATCH_SIZE)
             history = self.model.fit(
                 train_gen, 
                 batch_size=config.BATCH_SIZE, 
-                epochs=config.EPOCHS,
                 validation_data=(self.val_X, self.val_y,),
                 callbacks=[early_stopping]
             )
             logging.info(' Model Training Finised')
             logging.info('Saving the trained Model')
             
-            trained_model_file_path = os.path.join(config.CUR_DIR, 'artifacts', name+'.h5')
-            save_model(self.model, trained_model_file_path,)
+            
+            save_model(self.model, name)
             return history
         
         except Exception as e:

@@ -1,13 +1,15 @@
 import matplotlib.pyplot as plt
 import config
 import os
+import pdb
 
 def plot_accuracy(history, name):
     
     dir_path = os.path.join(config.CUR_DIR, 'artifacts', 'images')
-    dir_path = os.path.dirname(dir_path)
     os.makedirs(dir_path, exist_ok=True)
     image_name = os.path.join(dir_path, name)
+    
+    pdb.set_trace()
 
     plt.plot(history.history['accuracy'])
     plt.plot(history.history['val_accuracy'])
@@ -21,8 +23,7 @@ def plot_accuracy(history, name):
     
 def plot_loss(history, name):
     
-    dir_path = os.path.join(config.CUR_DIR, 'artifacts', 'images')
-    dir_path = os.path.dirname(dir_path)
+    dir_path = os.path.join(config.CUR_DIR, 'artifacts', 'Images')
     os.makedirs(dir_path, exist_ok=True)
     image_name = os.path.join(dir_path, name)
 
